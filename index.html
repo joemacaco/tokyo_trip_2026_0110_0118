@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 日本東京 4人行 (終極完整版)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #c0392b; /* 深紅 */
+            --member-b-color: #27ae60; /* 長榮綠 */
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --light-text: #555;
+            --border-radius: 12px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Roboto', 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 { font-size: 2rem; margin-bottom: 0.5rem; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        header p { font-size: 1.1rem; opacity: 0.95; }
+
+        /* Navigation */
+        nav {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 0.8rem 0.5rem;
+        }
+        nav ul { display: flex; list-style: none; padding-bottom: 2px; justify-content: center; }
+        nav li { margin: 0 4px; }
+        nav a {
+            display: block; padding: 0.6rem 1.2rem; text-decoration: none;
+            color: var(--primary-color); font-weight: 500; border-radius: 25px;
+            transition: all 0.3s; font-size: 0.95rem; background: #f0f2f5;
+        }
+        nav a:hover, nav a.active { background-color: var(--primary-color); color: white; transform: translateY(-2px); }
+        nav a.prep-link { background-color: #ffebee; color: var(--accent-color); }
+        nav a.prep-link:hover, nav a.prep-link.active { background-color: var(--accent-color); color: white; }
+
+        /* Main Layout */
+        main { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+
+        /* Card Styles */
+        .day-card {
+            background: var(--card-bg); border-radius: var(--border-radius);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;
+            overflow: hidden; border-top: 6px solid var(--primary-color);
+        }
+
+        .day-header {
+            padding: 1.5rem 2rem; border-bottom: 1px solid #eee;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+            background: #fafafa;
+        }
+        .day-title { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
+        .day-date { font-size: 1rem; color: #666; background: #e0e0e0; padding: 4px 10px; border-radius: 6px; font-weight: 500; }
+
+        /* Checklist Styles (Detailed) */
+        .checklist-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px; padding: 2rem;
+        }
+        .check-category { 
+            background: #fff; border-radius: 8px; padding: 0; 
+            border: 1px solid #e0e0e0; overflow: hidden;
+        }
+        .check-category h3 {
+            font-size: 1.1rem; padding: 12px 15px; margin: 0;
+            background: var(--primary-color); color: white;
+            border-bottom: 3px solid var(--accent-color);
+        }
+        .check-list-container { padding: 15px; }
+        .check-item { 
+            display: flex; align-items: center; margin-bottom: 10px; 
+            font-size: 0.95rem; border-bottom: 1px dashed #f0f0f0; padding-bottom: 6px; 
+        }
+        .check-item:last-child { border-bottom: none; margin-bottom: 0; }
+        .check-item input[type="checkbox"] { 
+            margin-right: 12px; width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-color);
+        }
+        .check-content { display: flex; flex-direction: column; }
+        .check-name { font-weight: 600; color: #333; }
+        .check-note { font-size: 0.8rem; color: #888; margin-top: 2px; }
+
+        /* Timeline Styles */
+        .timeline { padding: 2rem; position: relative; }
+        .timeline::before {
+            content: ''; position: absolute; left: 38px; top: 2.5rem; bottom: 2.5rem;
+            width: 3px; background: #e0e0e0; border-radius: 3px;
+        }
+
+        .event { position: relative; padding-left: 60px; margin-bottom: 2.5rem; }
+        .event:last-child { margin-bottom: 0; }
+        
+        /* Event Markers */
+        .event::after {
+            content: ''; position: absolute; left: 29px; top: 6px; width: 18px; height: 18px;
+            border-radius: 50%; background: white; border: 4px solid #3498db; z-index: 2;
+            box-shadow: 0 0 0 3px white;
+        }
+        .event.group-a::after { border-color: var(--primary-color); background: var(--primary-color); }
+        .event.group-b::after { border-color: var(--member-b-color); background: var(--member-b-color); }
+        .event.meetup::after { border-color: #f1c40f; background: #f1c40f; }
+        .event.transport::after { border-color: var(--accent-color); }
+
+        .event-time { 
+            font-weight: 800; color: var(--primary-color); font-size: 1.1rem; 
+            display: inline-block; margin-bottom: 6px; background: #f0f2f5; 
+            padding: 2px 8px; border-radius: 4px;
+        }
+        .event-title { font-weight: 700; font-size: 1.2rem; margin-bottom: 8px; color: #222; }
+        
+        /* Details List */
+        .event-desc ul { margin-top: 8px; padding-left: 20px; list-style-type: square; color: #555; }
+        .event-desc li { margin-bottom: 5px; }
+        .highlight { color: var(--accent-color); font-weight: 700; }
+
+        /* Tags */
+        .tag {
+            display: inline-block; font-size: 0.75rem; padding: 3px 10px; border-radius: 12px;
+            margin-left: 10px; color: white; background-color: #95a5a6; font-weight: 600;
+            vertical-align: middle; transform: translateY(-2px);
+        }
+        .tag.group-a { background-color: var(--primary-color); }
+        .tag.group-b { background-color: var(--member-b-color); }
+        .tag.meetup { background-color: #f39c12; }
+        .tag.transport { background-color: var(--accent-color); }
+
+        /* Alert Box */
+        .alert-box {
+            background-color: #fff8e1; border-left: 6px solid #ffc107; padding: 15px 20px;
+            margin: 0 0 10px 0; font-size: 0.95rem; color: #795548; display: flex; align-items: start;
+        }
+        .alert-box i { font-size: 1.2rem; margin-right: 12px; margin-top: 2px; }
+
+        /* Hotel Info */
+        .hotel-info {
+            background-color: #e3f2fd; color: #1565c0; padding: 15px 25px;
+            font-size: 1rem; display: flex; align-items: center; font-weight: 600;
+            border-bottom: 1px solid #bbdefb;
+        }
+        .hotel-info i { margin-right: 10px; font-size: 1.2rem; }
+
+        footer { text-align: center; padding: 3rem; color: #888; font-size: 0.9rem; background: #e0e0e0; margin-top: 50px; }
+
+        @media (max-width: 768px) {
+            .checklist-grid { grid-template-columns: 1fr; }
+            .event { padding-left: 45px; }
+            .timeline::before { left: 24px; }
+            .event::after { left: 16px; width: 16px; height: 16px; }
+            header h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🇯🇵 2026 日本東京與近郊 4人行</h1>
+    <p>2026/01/10 (六) - 2026/01/18 (日)</p>
+    <p style="margin-top: 10px; font-size: 0.9rem;">
+        <span style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 15px; margin-right: 10px;">
+            <i class="fas fa-plane"></i> 3人組: 虎航/華航 (羽田進/成田T2出)
+        </span>
+        <span style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 15px;">
+            <i class="fas fa-plane"></i> 成員B: 長榮 (成田T1進出)
+        </span>
+    </p>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="#prep" class="prep-link"><i class="fas fa-check-square"></i> 行前準備</a></li>
+        <li><a href="#day1">Day 1</a></li>
+        <li><a href="#day2">Day 2</a></li>
+        <li><a href="#day3">Day 3</a></li>
+        <li><a href="#day4">Day 4</a></li>
+        <li><a href="#day5">Day 5</a></li>
+        <li><a href="#day6">Day 6</a></li>
+        <li><a href="#day7">Day 7</a></li>
+        <li><a href="#day8">Day 8</a></li>
+        <li><a href="#day9">Day 9</a></li>
+    </ul>
+</nav>
+
+<main>
+
+    <div id="prep" class="day-card" style="border-top-color: var(--accent-color);">
+        <div class="day-header">
+            <div class="day-title" style="color: var(--accent-color);"><i class="fas fa-tasks"></i> 行前準備 & 檢查清單</div>
+            <div class="day-date">4人份總表</div>
+        </div>
+        <div style="padding: 0 2rem; margin-top: 1.5rem;">
+            <div class="alert-box">
+                <i class="fas fa-car-crash"></i> 
+                <div>
+                    <strong>租車嚴重提醒：</strong><br>
+                    4位成人 + 4件大行李，普通轎車絕對放不下！租車時請務必指定 <strong>Wish / Sienta / Noah / Voxy / Serena</strong> 等 7-8 人座箱型車 (Minivan)。
+                </div>
+            </div>
+        </div>
+        
+        <div class="checklist-grid">
+            <div class="check-category">
+                <h3><i class="fas fa-passport"></i> 證件文件</h3>
+                <div class="check-list-container">
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">VJW (Visit Japan Web)</span><span class="check-note">4人皆需填寫並截圖QR Code (入境+海關)</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">護照</span><span class="check-note">有效期需6個月以上</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">機票 (電子行程單)</span><span class="check-note">存手機 (IT216/CI101/BR184/BR197)</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">台灣駕照正本</span><span class="check-note">租車必備 (正本一定要帶)</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">駕照日文譯本</span><span class="check-note">監理所申請，期限內</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">日幣現金</span><span class="check-note">老店/寺廟/停車費使用</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">住宿證明</span><span class="check-note">地址印出或存手機 (填入境卡用)</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">Suica (西瓜卡)</span><span class="check-note">每人一張 (實體卡或手機綁定)</span></div></label></div>
+                </div>
+            </div>
+            
+            <div class="check-category">
+                <h3><i class="fas fa-tshirt"></i> 衣物鞋 (1月極冷)</h3>
+                <div class="check-list-container">
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">內褲</span><span class="check-note">足量或確認飯店洗衣</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">襪子</span><span class="check-note">建議多帶厚襪</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">衣服 (洋蔥式)</span><span class="check-note">發熱衣 + 一般長袖</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">褲子</span><span class="check-note">舒適好走為主</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">外套 (防風保暖)</span><span class="check-note">河口湖/箱根氣溫近0度</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">好走的鞋</span><span class="check-note">每日步數約 2 萬步</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">公會布條</span><span class="check-note">團體拍照紀念用 (別忘了!)</span></div></label></div>
+                </div>
+            </div>
+
+            <div class="check-category">
+                <h3><i class="fas fa-plug"></i> 電子設備</h3>
+                <div class="check-list-container">
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">手機</span><span class="check-note">確認國際漫遊/網卡設定</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">充電器 / 線</span><span class="check-note">日本電壓100V (台灣插頭通用)</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">行動電源</span><span class="check-note">務必放隨身行李，不可託運</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">自拍棒 / 腳架</span><span class="check-note">拍逆富士/合照用</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">手電筒</span><span class="check-note">郊區(箱根)晚上較暗</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">行李秤</span><span class="check-note">避免回程超重 (LCC嚴格)</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">SIM卡 / 網卡</span><span class="check-note">確認 4 人網路皆開通</span></div></label></div>
+                </div>
+            </div>
+
+            <div class="check-category">
+                <h3><i class="fas fa-medkit"></i> 生活用品</h3>
+                <div class="check-list-container">
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">個人藥品</span><span class="check-note">感冒、腸胃、止痛藥、暈車藥</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">雨傘 / 摺疊傘</span><span class="check-note">1月可能有雨雪</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">輕便雨衣</span><span class="check-note">備用</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">購物袋 (環保袋)</span><span class="check-note">日本塑膠袋皆收費</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">保溫杯</span><span class="check-note">隨時喝熱水暖身</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">衛生紙 / 濕紙巾</span><span class="check-note">隨身備用</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">口罩</span><span class="check-note">人多處或搭機建議配戴</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">刮鬍刀</span><span class="check-note">注意電池與託運規定</span></div></label></div>
+                    <div class="check-item"><label><input type="checkbox"><div class="check-content"><span class="check-name">洗面乳 / 保養品</span><span class="check-note">>100ml 液體需託運</span></div></label></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day1" class="day-card">
+        <div class="day-header">
+            <div class="day-title">Day 1: 分批抵達 & 淺草夜遊</div>
+            <div class="day-date">1/10 (六)</div>
+        </div>
+        <div class="hotel-info"><i class="fas fa-bed"></i> 住宿: Super Hotel 淺草 (4人同住)</div>
+        <div class="timeline">
+            <div class="event group-a">
+                <span class="event-time">04:00</span>
+                <span class="tag group-a">3人組</span> <span class="tag transport">IT216</span>
+                <div class="event-title">抵達羽田機場 (HND) T3</div>
+                <div class="event-desc">
+                    <ul>
+                        <li>04:00 降落 T3，辦理入境、領行李 (預計 1 小時)。</li>
+                        <li><strong>05:26 發車</strong>：搭乘「京急電鐵」首班車 (往成田/印旛日本醫大)。</li>
+                        <li><strong>無需轉乘</strong>：該班次直通都營淺草線。</li>
+                        <li><strong>06:05 抵達</strong>：淺草站 (走 A1 電梯出口)。</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="event group-a">
+                <span class="event-time">06:30</span>
+                <span class="tag group-a">3人組</span>
+                <div class="event-title">淺草早鳥行程</div>
+                <div class="event-desc">
+                    <ul>
+                        <li>前往飯店寄放行李。</li>
+                        <li>06:30 清晨淺草寺雷門 (無人空景拍照)。</li>
+                        <li>09:00 早餐：<strong>Ginza Brazil</strong> (推薦：炸雞三明治)。</li>
+                        <li>11:00 觀光：皇居二重橋、銀座散步。</li>
+                        <li>14:00 返回淺草準備 Check-in。</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="event group-b">
+                <span class="event-time">12:00</span>
+                <span class="tag group-b">成員B</span> <span class="tag transport">BR184</span>
+                <div class="event-title">抵達成田機場 (NRT) T1</div>
+                <div class="event-desc">
+                    <ul>
+                        <li>12:00 降落 <span class="highlight">第一航廈 (Terminal 1)</span>，辦理入境。</li>
+                        <li><strong>13:05 發車</strong>：搭乘「京成電鐵 Access 特急」(往羽田空港方向)。</li>
+                        <li><strong>無需轉乘</strong>：約 60 分鐘直達淺草站。</li>
+                        <li><strong>14:15 抵達</strong>：淺草站。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="event meetup">
+                <span class="event-time">15:00</span>
+                <span class="tag meetup">全員會合</span>
+                <div class="event-title">飯店 Check-in & 補眠</div>
+                <div class="event-desc">
+                    <ul>
+                        <li>地點：Super Hotel 淺草大廳。</li>
+                        <li>重點：<strong>全員進房補眠休息</strong> (恢復紅眼航班體力，為晚上行程充電)。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="event">
+                <span class="event-time">17:30</span>
+                <span class="tag spot">景點</span>
+                <div class="event-title">淺草文化觀光中心 & 夜遊</div>
+                <div class="event-desc">
+                    <ul>
+                        <li>步行至雷門對面的觀光中心，上 <strong>8 樓免費展望台</strong>看夜景。</li>
+                        <li>18:30 夜遊點燈後的淺草寺 (本堂/五重塔)，避開白天人潮。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="event">
+                <span class="event-time">19:30</span>
+                <span class="tag food">晚餐</span>
+                <div class="event-title">淺草在地晚餐 (二選一)</div>
+                <div class="event-desc">
+                    <ul>
+                        <li><strong>淺草今半 (國際通本店)</strong>：頂級壽喜燒 (需預約)。</li>
+                        <li><strong>淺草橫町 (Asakusa Yokocho)</strong>：熱鬧祭典風居酒屋街。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day2" class="day-card">
+        <div class="day-header">
+            <div class="day-title">Day 2: 上野、龜有與敘敘苑</div>
+            <div class="day-date">1/11 (日)</div>
+        </div>
+        <div class="hotel-info"><i class="fas fa-bed"></i> 住宿: Super Hotel 淺草</div>
+        <div class="timeline">
+            <div class="event">
+                <span class="event-time">09:00</span>
+                <div class="event-title">上野恩賜公園 & 二木菓子</div>
+                <div class="event-desc">
+                    <ul>
+                        <li>上野動物園 (看熊貓)、不忍池。</li>
+                        <li>逛阿美橫丁商店街。</li>
+                        <li><strong>二木菓子</strong>：採買零食伴手禮 (可退稅)。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="event">
+                <span class="event-time">12:30</span>
+                <span class="tag food">午餐</span>
+                <div class="event-title">上野美食推薦</div>
+                <div class="event-desc">
+                    <ul>
+                        <li><strong>とんかつ山家 (Yamabe)</strong>：高 CP 值炸豬排。</li>
+                        <li><strong>伊豆榮 (Izuei)</strong>：老字號鰻魚飯。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="event">
+                <span class="event-time">14:30</span>
+                <div class="event-title">龜有巡禮 (兩津勘吉)</div>
+                <div class="event-desc">搭乘 JR 常磐線至「龜有站」，拿地圖尋找烏龍派出所銅像。</div>
+            </div>
+            <div class="event">
+                <span class="event-time">17:00</span>
+                <div class="event-title">東京晴空塔 (Skytree)</div>
+                <div class="event-desc">逛 Solamachi 商場。</div>
+            </div>
+            <div class="event">
+                <span class="event-time">20:30</span>
+                <span class="tag food">晚餐</span>
+                <div class="event-title">敘敘苑 晴空塔店</div>
+                <div class="event-desc">
+                    <ul>
+                        <li><strong>[已訂位4人]</strong> 享受 30 樓高空景觀燒肉。</li>
+                        <li>注意：請勿遲到。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day3" class="day-card">
+        <div class="day-header">
+            <div class="day-title">Day 3: 箱根溫泉自駕</div>
+            <div class="day-date">1/12 (一)</div>
+        </div>
+        <div class="hotel-info"><i class="fas fa-bed"></i> 住宿: 箱根強羅溫泉 季之湯 雪月花</div>
+        <div class="timeline">
+            <div class="event transport">
+                <span class="event-time">08:30</span>
+                <span class="tag transport">租車</span>
+                <div class="event-title">取車出發 (吾妻橋店)</div>
+                <div class="event-desc">
+                    <ul>
+                        <li>地點：トヨタレンタカー 吾妻橋店 (墨田區吾妻橋3-8-2)。</li>
+                        <li>車型確認：<strong>WISH / SIENTA / NOAH (7人座)</strong>。</li>
+                        <li>備註：成人之日連假，請儘速出發往箱根。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="event">
+                <span class="event-time">11:00</span>
+                <div class="event-title">箱根景點巡禮</div>
+                <div class="event-desc">
+                    <ul>
+                        <li><strong>箱根神社</strong>：拍攝水上平和鳥居 (需排隊)。</li>
+                        <li><strong>元箱根港</strong>：搭乘海賊船遊蘆之湖。</li>
+                        <li><strong>大涌谷</strong>：觀賞地熱、吃長壽黑蛋。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="event">
+                <span class="event-time">午餐</span>
+                <span class="tag food">美食</span>
+                <div class="event-title">田むら銀かつ亭</div>
+                <div class="event-desc">強羅知名的「炸豆腐排」老店。</div>
+            </div>
+            <div class="event">
+                <span class="event-time">16:30</span>
+                <div class="event-title">入住雪月花</div>
+                <div class="event-desc">Check-in，享受全客室露天風呂與一泊二食晚餐。</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day4" class="day-card">
+        <div class="day-header">
+            <div class="day-title">Day 4: 御殿場 Outlet & 河口湖</div>
+            <div class="day-date">1/13 (二)</div>
+        </div>
+        <div class="hotel-info"><i class="fas fa-bed"></i> 住宿: 秀峰閣湖月 (富士山第一排)</div>
+        <div class="timeline">
+            <div class="event">
+                <span class="event-time">09:30</span>
+                <span class="tag shop">購物</span>
+                <div class="event-title">御殿場 Outlet</div>
+                <div class="event-desc">
+                    <ul>
+                        <li>開門即抵達，趁人少時購物。</li>
+                        <li>推薦拍攝點：夢之大橋 (富士山背景)。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="event">
+                <span class="event-time">13:30</span>
+                <div class="event-title">河口湖周邊探索</div>
+                <div class="event-desc">
+                    <ul>
+                        <li><strong>富岳風穴</strong>：探索地底冰穴 (注意防滑)。</li>
+                        <li><strong>大石公園</strong>：拍攝富士山全景與蘆葦/花海。</li>
+                        <li><strong>天上山公園</strong>：搭乘纜車俯瞰河口湖。</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="event">
+                <span class="event-time">16:30</span>
+                <div class="event-title">飯店 Check-in</div>
+                <div class="event-desc">務必在夕陽前抵達，房內即可觀賞富士山絕景與逆富士。</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day5" class="day-card">
+        <div class="day-header">
+            <div class="day-title">Day 5: 富士攝影 & 還車</div>
+            <div class="day-date">1/14 (三)</div>
+        </div>
+        <div class="hotel-info"><i class="fas fa-bed"></i> 住宿: Super Hotel Lohas 池袋北口</div>
+        <div class="timeline">
+            <div class="event">
+                <span class="event-time">07:00</span>
+                <span class="tag spot">攝影</span>
+                <div class="event-title">新倉富士淺間神社</div>
+                <div class="event-desc">爬 398 階梯，拍攝「五重塔+富士山」經典明信片照。</div>
+            </div>
+            <div class="event">
+                <span class="event-time">上午</span>
+                <div class="event-title">富士吉田市區</div>
+                <div class="event-desc">
+                    <ul>
+                        <li><strong>金鳥居</strong>：拍攝鳥居包框富士山。</li>
+                        <li><strong>天空鳥居</strong>：河口淺間神社遙拜所。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="event transport">
+                <span class="event-time">14:00</span>
+                <span class="tag transport">交通</span>
+                <div class="event-title">返回東京</div>
+                <div class="event-desc">提早出發避開傍晚進城的塞車潮。</div>
+            </div>
+            <div class="event transport">
+                <span class="event-time">20:00</span>
+                <span class="tag transport">還車</span>
+                <div class="event-title">池袋西口店 還車</div>
+                <div class="event-desc">
+                    <ul>
+                        <li>地址：豊島區西池袋1-29-7。</li>
+                        <li>還車後步行 8 分鐘至 Super Hotel Lohas Check-in。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day6" class="day-card">
+        <div class="day-header">
+            <div class="day-title">Day 6: 鎌倉江之島一日遊</div>
+            <div class="day-date">1/15 (四)</div>
+        </div>
+        <div class="hotel-info"><i class="fas fa-bed"></i> 住宿: Super Hotel Lohas 池袋北口</div>
+        <div class="timeline">
+            <div class="event transport">
+                <span class="event-time">08:31</span>
+                <span class="tag transport">去程</span>
+                <div class="event-title">池袋站出發</div>
+                <div class="event-desc">
+                    <ul>
+                        <li><strong>08:31 發車</strong>：JR 湘南新宿線 (往逗子方向)。</li>
+                        <li><strong>09:24 抵達</strong>：藤澤站。轉乘江之電 (買一日券)。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="event">
+                <span class="event-time">全日</span>
+                <div class="event-title">鎌倉江之島巡禮</div>
+                <div class="event-desc">
+                    <ul>
+                        <li><strong>江之島</strong>：江島神社、海蠟燭展望台。</li>
+                        <li><strong>鎌倉高校前</strong>：灌籃高手平交道。</li>
+                        <li><strong>長谷</strong>：高德院鎌倉大佛。</li>
+                        <li><strong>小町通</strong>：商店街逛街、鶴岡八幡宮。</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="event">
+                <span class="event-time">美食</span>
+                <span class="tag food">推薦</span>
+                <div class="event-title">鎌倉美食</div>
+                <div class="event-desc">Shirasuya (魩仔魚丼)、Giraffa (咖哩麵包)、豐島屋 (鴿子餅乾)。</div>
+            </div>
+            <div class="event transport">
+                <span class="event-time">回程</span>
+                <span class="tag transport">建議</span>
+                <div class="event-title">JR 綠色車廂 (Green Car)</div>
+                <div class="event-desc">回程若疲憊，建議在月台販賣機加購 Green Car 券，有舒適座位直達池袋。</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day7" class="day-card">
+        <div class="day-header">
+            <div class="day-title">Day 7: 成員B返台 & 澀谷購物</div>
+            <div class="day-date">1/16 (五)</div>
+        </div>
+        <div class="hotel-info"><i class="fas fa-bed"></i> 住宿: Super Hotel Lohas 池袋北口 (3人)</div>
+        <div class="timeline">
+            <div class="event group-b">
+                <span class="event-time">10:45</span>
+                <span class="tag group-b">成員B</span> <span class="tag transport">BR197</span>
+                <div class="event-title">前往成田機場 T1</div>
+                <div class="event-desc">
+                    <ul>
+                        <li>10:45 與大家道別，搭 JR 山手線至日暮里。</li>
+                        <li><strong>11:05 發車</strong>：Skyliner 23號。</li>
+                        <li><strong>11:44 抵達</strong>：成田機場 (NRT) <span class="highlight">第 1 航廈 (Terminal 1)</span>。</li>
+                        <li>14:00 起飛：BR197 返回台北。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="event group-a">
+                <span class="event-time">12:00</span>
+                <span class="tag group-a">3人組</span>
+                <div class="event-title">澀谷潮流購物</div>
+                <div class="event-desc">
+                    <ul>
+                        <li>午餐：<strong>牛かつもと村</strong> (炸牛排)。</li>
+                        <li>下午：逛澀谷、青山、表參道。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="event group-a">
+                <span class="event-time">16:00</span>
+                <span class="tag spot">景點</span>
+                <div class="event-title">澀谷 SKY (SHIBUYA SKY)</div>
+                <div class="event-desc"><strong>[需預約]</strong> 欣賞東京最美夕陽與 360 度夜景。</div>
+            </div>
+            <div class="event group-a">
+                <span class="event-time">20:00</span>
+                <span class="tag food">晚餐</span>
+                <div class="event-title">Meat 矢澤 (五反田本店)</div>
+                <div class="event-desc">從澀谷搭 JR 山手線 7 分鐘即達五反田，享用頂級和牛漢堡排。</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day8" class="day-card">
+        <div class="day-header">
+            <div class="day-title">Day 8: 池袋主場深度遊 (3人)</div>
+            <div class="day-date">1/17 (六)</div>
+        </div>
+        <div class="hotel-info"><i class="fas fa-bed"></i> 住宿: Super Hotel Lohas 池袋北口</div>
+        <div class="timeline">
+            <div class="event">
+                <span class="event-time">10:00</span>
+                <span class="tag food">早午餐</span>
+                <div class="event-title">飯糰名店巡禮</div>
+                <div class="event-desc">
+                    前往大塚站：
+                    <ul>
+                        <li><strong>ぼんご (Bongo)</strong>：排隊名店 (建議 09:30 前去排)。</li>
+                        <li><strong>山太郎</strong>：美味備案，風格相似。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="event">
+                <span class="event-time">11:30</span>
+                <div class="event-title">巢鴨 & 荒川線</div>
+                <div class="event-desc">巢鴨地藏通商店街 (洗觀音)、拍攝都電荒川線路面電車。</div>
+            </div>
+            <div class="event">
+                <span class="event-time">14:00</span>
+                <span class="tag shop">購物</span>
+                <div class="event-title">池袋太陽城 (Sunshine City)</div>
+                <div class="event-desc">
+                    <ul>
+                        <li><strong>Pokemon Center Mega Tokyo</strong> (2F)。</li>
+                        <li><strong>陽光水族館</strong> (頂樓看天空企鵝)。</li>
+                        <li><strong>Animate 池袋本店</strong> (動漫迷必去)。</li>
+                        <li>優勢：買完直接走回飯店放戰利品。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="event">
+                <span class="event-time">19:00</span>
+                <div class="event-title">極致放鬆</div>
+                <div class="event-desc">享用飯店 Welcome Bar 免費暢飲，並泡炭酸泉消除 8 天疲勞。</div>
+            </div>
+            <div class="event">
+                <span class="event-time">20:30</span>
+                <span class="tag food">晚餐</span>
+                <div class="event-title">慶功宴</div>
+                <div class="event-desc">池袋西口居酒屋 (如：鳥貴族、磯丸水產)。</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day9" class="day-card">
+        <div class="day-header">
+            <div class="day-title">Day 9: 3人組返台</div>
+            <div class="day-date">1/18 (日)</div>
+        </div>
+        <div class="timeline">
+            <div class="event">
+                <span class="event-time">10:45</span>
+                <div class="event-title">退房出發</div>
+                <div class="event-desc">步行至 JR 池袋站。</div>
+            </div>
+            <div class="event transport">
+                <span class="event-time">11:00</span>
+                <span class="tag transport">JR</span>
+                <div class="event-title">搭乘 JR 山手線</div>
+                <div class="event-desc">往上野/日暮里方向。</div>
+            </div>
+            <div class="event transport">
+                <span class="event-time">11:25</span>
+                <span class="tag transport">Skyliner</span>
+                <div class="event-title">搭乘 Skyliner 25號</div>
+                <div class="event-desc">
+                    <ul>
+                        <li><strong>11:25 發車</strong>：日暮里站。</li>
+                        <li><strong>12:04 抵達</strong>：成田機場 (NRT) <span class="highlight">第 2 航廈 (Terminal 2)</span>。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="event">
+                <span class="event-time">12:04</span>
+                <div class="event-title">抵達成田 T2</div>
+                <div class="event-desc">華航 CI101 報到，最後免稅店採買。</div>
+            </div>
+            <div class="event">
+                <span class="event-time">14:35</span>
+                <div class="event-title">起飛 (CI101)</div>
+                <div class="event-desc">搭機返回台北。</div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <p>© 2026 Tokyo Trip Itinerary</p>
+    <p style="margin-top:5px; font-size: 0.8rem;">⚠️ 提醒：冬季自駕請務必確認雪胎 (Studless Tires) 配備。</p>
+</footer>
+
+<script>
+    document.querySelectorAll('nav a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            this.classList.add('active');
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            window.scrollTo({
+                top: targetElement.offsetTop - 70,
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
